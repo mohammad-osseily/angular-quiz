@@ -1,0 +1,183 @@
+// ==============================================
+// THEME VARIABLES
+// ==============================================
+
+// ---------------------------------------------
+// PRIMARY COLORS
+// ---------------------------------------------
+$primary: #e94560;
+$primary-light: #ff6b6b;
+$primary-dark: #d63850;
+
+// Primary gradient
+$primary-gradient: linear-gradient(135deg, $primary 0%, $primary-light 100%);
+
+// ---------------------------------------------
+// DARK COLORS (Header/Dark UI)
+// ---------------------------------------------
+$dark-1: #1a1a2e;
+$dark-2: #16213e;
+$dark-3: #0f3460;
+
+// Dark gradient (for header)
+$dark-gradient: linear-gradient(135deg, $dark-1 0%, $dark-2 50%, $dark-3 100%);
+
+// ---------------------------------------------
+// TEXT COLORS
+// ---------------------------------------------
+$text-primary: #333;
+$text-secondary: #666;
+$text-muted: #888;
+$text-light: #ccc;
+$text-white: #fff;
+
+// ---------------------------------------------
+// BACKGROUND COLORS
+// ---------------------------------------------
+$bg-white: #fff;
+$bg-light: #f8f9fa;
+$bg-light-hover: #f0f2f5;
+$bg-border: #f0f0f0;
+$bg-skeleton: #e0e0e0;
+
+// ---------------------------------------------
+// STATES & FEEDBACK
+// ---------------------------------------------
+$error: #f44336;
+$success: #4caf50;
+$warning: #ff9800;
+
+// ---------------------------------------------
+// SHADOWS
+// ---------------------------------------------
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.2);
+$shadow-primary: 0 4px 15px rgba($primary, 0.4);
+$shadow-primary-lg: 0 12px 40px rgba($primary, 0.2);
+$shadow-header: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+// ---------------------------------------------
+// BORDER RADIUS
+// ---------------------------------------------
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-full: 50%;
+
+// ---------------------------------------------
+// TRANSITIONS
+// ---------------------------------------------
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ---------------------------------------------
+// SPACING
+// ---------------------------------------------
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// ---------------------------------------------
+// BREAKPOINTS
+// ---------------------------------------------
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1400px;
+
+// ---------------------------------------------
+// Z-INDEX LAYERS
+// ---------------------------------------------
+$z-dropdown: 1001;
+$z-header: 1000;
+$z-loading: 9999;
+
+// ---------------------------------------------
+// TYPOGRAPHY
+// ---------------------------------------------
+$font-size-xs: 10px;
+$font-size-sm: 12px;
+$font-size-base: 14px;
+$font-size-md: 15px;
+$font-size-lg: 16px;
+$font-size-xl: 18px;
+$font-size-2xl: 22px;
+$font-size-3xl: 28px;
+$font-size-4xl: 32px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// ==============================================
+// MIXINS
+// ==============================================
+
+// Skeleton loading animation
+@mixin skeleton-shimmer {
+  background: linear-gradient(90deg, $bg-light 25%, $bg-skeleton 50%, $bg-light 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Fade in up animation
+@mixin fade-in-up($duration: 0.4s) {
+  animation: fadeInUp $duration ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Card hover effect
+@mixin card-hover {
+  transition: all $transition-smooth;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-primary-lg;
+  }
+}
+
+// Text ellipsis
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Responsive breakpoint
+@mixin mobile {
+  @media (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $breakpoint-desktop) {
+    @content;
+  }
+}

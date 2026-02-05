@@ -1,1 +1,111 @@
-/* You can add global styles to this file, and also import other style files */
+// Angular Material Theme
+@use '@angular/material' as mat;
+
+// Import our custom theme
+@use './styles/theme' as *;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        tertiary: mat.$azure-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  height: 100%;
+}
+
+// Global styles
+* {
+  box-sizing: border-box;
+}
+
+// Smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $primary-gradient;
+  border-radius: $spacing-xs;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, $primary-dark 0%, $primary 100%);
+}
+
+// Focus styles for accessibility
+*:focus-visible {
+  outline: 2px solid $primary;
+  outline-offset: 2px;
+}
+
+// Link reset
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Selection color
+::selection {
+  background: rgba($primary, 0.3);
+  color: $text-primary;
+}
+
+// Material overrides for consistent theming
+.mat-mdc-card {
+  --mdc-elevated-card-container-color: #{$bg-white};
+}
+
+.mat-mdc-progress-bar {
+  --mdc-linear-progress-active-indicator-color: #{$primary};
+}
+
+// Page transition animations
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 0.3s ease;
+}
+
+// Remove number input spinners
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}

@@ -1,0 +1,93 @@
+<header class="header">
+  <div class="header-content">
+    <!-- Logo -->
+    <a routerLink="/" class="logo" tabindex="0" aria-label="Go to home page">
+      <div class="logo-icon">
+        <mat-icon>diversity_3</mat-icon>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">Users</span>
+        <span class="logo-subtitle">Directory</span>
+      </div>
+    </a>
+
+    <!-- Search -->
+    <div class="search-wrapper" [class.search-focused]="isSearchFocused()">
+      <div class="search-box">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search by name or ID..."
+          [ngModel]="searchQuery()"
+          (ngModelChange)="handleSearchChange($event)"
+          (focus)="handleSearchFocus()"
+          (blur)="handleSearchBlur()"
+          aria-label="Search user by name or ID"
+        />
+        @if (searchQuery()) {
+          <button
+            class="clear-btn"
+            (click)="handleClearSearch()"
+            aria-label="Clear search"
+            tabindex="0"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </div>
+
+      <!-- Search Results Dropdown -->
+      @if (showSearchResult()) {
+        <div class="search-dropdown">
+          @if (isSearching()) {
+            <div class="search-status">
+              <div class="search-spinner"></div>
+              <span>Searching...</span>
+            </div>
+          } @else if (searchResults().length > 0) {
+            <div class="results-list">
+              @for (user of searchResults(); track user.id) {
+                <div
+                  class="search-result"
+                  (click)="handleNavigateToUser(user.id)"
+                  (keydown.enter)="handleNavigateToUser(user.id)"
+                  tabindex="0"
+                  role="button"
+                  matRipple
+                  [attr.aria-label]="'View ' + user.first_name + ' ' + user.last_name"
+                >
+                  <img
+                    [src]="user.avatar"
+                    [alt]="user.first_name + ' ' + user.last_name"
+                    class="result-avatar"
+                  />
+                  <div class="result-details">
+                    <span class="result-name">
+                      {{ user.first_name }} {{ user.last_name }}
+                    </span>
+                    <span class="result-meta">
+                      <span class="result-id">ID: {{ user.id }}</span>
+                      <span class="result-email">{{ user.email }}</span>
+                    </span>
+                  </div>
+                  <mat-icon class="result-action">arrow_forward</mat-icon>
+                </div>
+              }
+            </div>
+            @if (searchResults().length > 5) {
+              <div class="results-footer">
+                Showing {{ searchResults().length }} results
+              </div>
+            }
+          } @else if (searchQuery() && !isSearching()) {
+            <div class="search-status no-results">
+              <mat-icon>sentiment_dissatisfied</mat-icon>
+              <span>No users found for "{{ searchQuery() }}"</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</header>

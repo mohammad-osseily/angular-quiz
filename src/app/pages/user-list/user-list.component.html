@@ -1,0 +1,51 @@
+<div class="user-list-container">
+  <div class="page-header">
+    <h1 class="page-title">
+      <mat-icon>group</mat-icon>
+      <span>Our Users</span>
+    </h1>
+    <p class="page-subtitle">Browse through our amazing community members</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="loading-cards">
+        @for (i of skeletonItems; track i) {
+          <div class="skeleton-card">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-info">
+              <div class="skeleton-name"></div>
+              <div class="skeleton-id"></div>
+              <div class="skeleton-email"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="error-state">
+      <mat-icon>error_outline</mat-icon>
+      <h2>Oops! Something went wrong</h2>
+      <p>{{ error() }}</p>
+      <button mat-raised-button color="primary" (click)="loadUsers()">Try Again</button>
+    </div>
+  } @else {
+    <div class="users-grid">
+      @for (user of users(); track user.id) {
+        <app-user-card [user]="user" class="user-card-item"></app-user-card>
+      }
+    </div>
+
+    <mat-paginator
+      class="paginator"
+      [length]="totalUsers()"
+      [pageSize]="pageSize()"
+      [pageIndex]="currentPage() - 1"
+      [pageSizeOptions]="[]"
+      [showFirstLastButtons]="true"
+      (page)="handlePageChange($event)"
+      aria-label="Select page of users"
+    >
+    </mat-paginator>
+  }
+</div>

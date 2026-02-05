@@ -1,0 +1,13 @@
+@use '../../../styles/theme' as *;
+
+.loading-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-loading;
+}
+
+mat-progress-bar {
+  height: 3px;
+}

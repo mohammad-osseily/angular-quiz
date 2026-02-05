@@ -1,0 +1,28 @@
+<a
+  [routerLink]="['/user', user.id]"
+  class="card-link"
+  tabindex="0"
+  [attr.aria-label]="'View details for ' + user.first_name + ' ' + user.last_name"
+>
+  <mat-card class="user-card">
+    <div class="card-content">
+      <div class="avatar-container">
+        <img
+          [src]="user.avatar"
+          [alt]="user.first_name + ' ' + user.last_name"
+          class="avatar"
+          loading="lazy"
+        />
+        <div class="avatar-overlay">
+          <mat-icon>visibility</mat-icon>
+        </div>
+      </div>
+      <div class="user-info">
+        <h3 class="user-name">{{ user.first_name }} {{ user.last_name }}</h3>
+        <span class="user-id">ID: {{ user.id }}</span>
+        <span class="user-email">{{ user.email }}</span>
+      </div>
+      <mat-icon class="arrow-icon">chevron_right</mat-icon>
+    </div>
+  </mat-card>
+</a>

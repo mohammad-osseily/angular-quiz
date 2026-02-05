@@ -1,0 +1,12 @@
+@use '../styles/theme' as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  background: linear-gradient(180deg, $bg-light 0%, $bg-white 100%);
+}

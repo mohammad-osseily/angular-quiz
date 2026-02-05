@@ -1,59 +1,117 @@
-# AngularQuiz
+# Users Directory
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+A modern Angular application that displays a paginated list of users with search functionality, built with Angular 21 and Angular Material.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- **Paginated User List** - Browse users with pagination support
+- **User Details** - View detailed information for each user
+- **Instant Search** - Search users by ID or name without a submit button
+- **Caching** - Intelligent caching to avoid redundant API requests
+- **Loading Indicator** - Progress bar shows during network requests
+- **Responsive Design** - Works on desktop and mobile devices
+- **Modern UI** - Beautiful design with Angular Material components
 
-```bash
-ng serve
+## Tech Stack
+
+- **Angular 21** - Latest Angular with standalone components and signals
+- **Angular Material** - UI component library
+- **RxJS** - Reactive programming for async operations
+- **SCSS** - Styling with custom theme system
+- **TypeScript** - Type-safe development
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── header/           # Header with search
+│   │   ├── loading-bar/      # Loading progress bar
+│   │   └── user-card/        # User card component
+│   ├── pages/
+│   │   ├── user-list/        # Users list page
+│   │   └── user-detail/      # User detail page
+│   ├── services/
+│   │   ├── user.service.ts   # User API service with caching
+│   │   └── loading.service.ts # Loading state service
+│   ├── interceptors/
+│   │   └── loading.interceptor.ts # HTTP interceptor
+│   └── models/
+│       └── user.model.ts     # TypeScript interfaces
+├── styles/
+│   └── _theme.scss           # Theme variables and mixins
+└── styles.scss               # Global styles
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Getting Started
 
-## Code scaffolding
+### Prerequisites
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Node.js 18+
+- npm 9+
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Installation
 
 ```bash
-ng generate --help
+# Clone the repository
+git clone <repository-url>
+cd angular-quiz
+
+# Install dependencies
+npm install
 ```
 
-## Building
-
-To build the project run:
+### Development Server
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Navigate to `http://localhost:4200/`. The app will automatically reload on file changes.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Build
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+Build artifacts will be stored in the `dist/` directory.
 
-For end-to-end (e2e) testing, run:
+## API
 
-```bash
-ng e2e
-```
+This application uses the [ReqRes API](https://reqres.in/) for user data.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+**Endpoints used:**
+- `GET /api/users?page={page}` - Get paginated users
+- `GET /api/users/{id}` - Get single user by ID
 
-## Additional Resources
+**Note:** The app uses a proxy configuration for development to handle CORS.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Features Implementation
+
+### Caching Strategy
+
+The app implements in-memory caching using JavaScript `Map`:
+- Paginated responses are cached by page number
+- Individual users are cached by ID
+- Subsequent requests return cached data instantly
+
+### Search Functionality
+
+- **Instant search** - Results appear as you type (300ms debounce)
+- **ID search** - Enter a number to search by user ID
+- **Name search** - Enter text to search by first/last name
+- **Click outside** - Closes the dropdown
+
+### Theme System
+
+All colors and design tokens are centralized in `src/styles/_theme.scss`:
+- Color variables (`$primary`, `$text-primary`, etc.)
+- Spacing and sizing
+- Shadows and transitions
+- Reusable mixins
+
+## License
+
+This project is for demonstration purposes.
