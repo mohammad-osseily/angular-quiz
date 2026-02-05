@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of, tap, map, catchError, forkJoin } from 'rxjs';
+import { Observable, of, tap, map, catchError } from 'rxjs';
 import { User, UserResponse, UsersResponse } from '../models/user.model';
 
 @Injectable({
@@ -76,106 +76,28 @@ export class UserService {
     );
   }
 
-  // Load all users for name search
+  // Load all users for name search (reuses loadAllUsersComplete)
   private loadAllUsers(): Observable<User[]> {
-    if (this.allUsersLoaded && this.allUsers.length > 0) {
-      return of(this.allUsers);
-    }
-
-    // First, get page 1 to know total pages
-    return this.http.get<UsersResponse>(`${this.baseUrl}?page=1&per_page=12`, this.httpOptions).pipe(
-      map((firstPage) => {
-        const totalPages = firstPage.total_pages;
-        const allUsers: User[] = [...firstPage.data];
-
-        // Cache these users
-        firstPage.data.forEach((user) => this.userCache.set(user.id, user));
-
-        // If there are more pages, we need to fetch them
-        // For simplicity, we'll work with what we have from page 1 and 2
-        return allUsers;
-      }),
-      tap((users) => {
-        this.allUsers = users;
-        this.allUsersLoaded = true;
-      })
-    );
+    return this.loadAllUsersComplete();
   }
 
-  // Fetch all pages to get all users
+  // Fetch all users for search (does not affect pagination cache)
   loadAllUsersComplete(): Observable<User[]> {
     if (this.allUsersLoaded && this.allUsers.length > 0) {
       return of(this.allUsers);
     }
 
-    // First get page 1 to know total pages
+    // Fetch all users at once (max 12 from reqres API)
     return this.http.get<UsersResponse>(`${this.baseUrl}?page=1&per_page=12`, this.httpOptions).pipe(
       map((response) => {
-        const requests: Observable<UsersResponse>[] = [];
-        const totalPages = response.total_pages;
-
-        // We already have page 1, cache it
-        this.usersCache.set(1, response);
+        // Only cache individual users, NOT the page response
+        // This prevents conflicts with the paginated view
         response.data.forEach((user) => this.userCache.set(user.id, user));
-
-        // Create requests for remaining pages
-        for (let page = 2; page <= totalPages; page++) {
-          const cached = this.usersCache.get(page);
-          if (cached) {
-            requests.push(of(cached));
-          } else {
-            requests.push(
-              this.http.get<UsersResponse>(`${this.baseUrl}?page=${page}&per_page=12`, this.httpOptions).pipe(
-                tap((res) => {
-                  this.usersCache.set(page, res);
-                  res.data.forEach((user) => this.userCache.set(user.id, user));
-                })
-              )
-            );
-          }
-        }
-
-        return { firstPage: response, requests };
-      }),
-      // Flatten and combine all users
-      map(({ firstPage, requests }) => {
-        if (requests.length === 0) {
-          this.allUsers = firstPage.data;
-          this.allUsersLoaded = true;
-          return of(firstPage.data);
-        }
-
-        return forkJoin(requests).pipe(
-          map((responses) => {
-            const allUsers = [
-              ...firstPage.data,
-              ...responses.flatMap((r) => r.data),
-            ];
-            this.allUsers = allUsers;
-            this.allUsersLoaded = true;
-            return allUsers;
-          })
-        );
-      }),
-      // Flatten the nested observable
-      (source) =>
-        new Observable<User[]>((subscriber) => {
-          source.subscribe({
-            next: (result) => {
-              if (result instanceof Observable) {
-                result.subscribe({
-                  next: (users) => subscriber.next(users),
-                  error: (err) => subscriber.error(err),
-                  complete: () => subscriber.complete(),
-                });
-              } else {
-                subscriber.next(result as User[]);
-                subscriber.complete();
-              }
-            },
-            error: (err) => subscriber.error(err),
-          });
-        })
+        
+        this.allUsers = response.data;
+        this.allUsersLoaded = true;
+        return response.data;
+      })
     );
   }
 
