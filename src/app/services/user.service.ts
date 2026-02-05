@@ -34,7 +34,7 @@ export class UserService {
       return of(cached);
     }
 
-    return this.http.get<UsersResponse>(`${this.baseUrl}?page=${page}&per_page=8`, this.httpOptions).pipe(
+    return this.http.get<UsersResponse>(`${this.baseUrl}?page=${page}&per_page=6`, this.httpOptions).pipe(
       tap((response) => {
         // Store in cache
         this.usersCache.set(page, response);

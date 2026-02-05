@@ -23,7 +23,7 @@ export class UserListComponent implements OnInit {
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
 
-  readonly skeletonItems = [1, 2, 3, 4, 5, 6, 7, 8];
+  readonly skeletonItems = [1, 2, 3, 4, 5, 6];
 
   ngOnInit(): void {
     this.loadUsers();

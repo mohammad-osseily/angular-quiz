@@ -29,7 +29,9 @@
     </mat-card>
   } @else if (user()) {
     <mat-card class="user-detail-card">
-      <div class="card-background"></div>
+      <div class="card-background">
+        <div class="card-background-pattern"></div>
+      </div>
       <div class="card-content">
         <div class="avatar-section">
           <img
@@ -44,6 +46,10 @@
 
         <div class="user-info-section">
           <h1 class="user-name">{{ user()!.first_name }} {{ user()!.last_name }}</h1>
+          <p class="user-subtitle">
+            <span class="status-dot"></span>
+            Active User
+          </p>
 
           <div class="info-grid">
             <div class="info-item">

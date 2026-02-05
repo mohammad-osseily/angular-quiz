@@ -8,5 +8,10 @@
 
 .main-content {
   flex: 1;
-  background: linear-gradient(180deg, $bg-light 0%, $bg-white 100%);
+  background: #f0f2f5;
+  padding-top: 84px; // Header height offset
+
+  @media (max-width: $breakpoint-tablet) {
+    padding-top: 74px; // Mobile header height offset
+  }
 }
